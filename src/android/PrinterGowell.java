@@ -1,4 +1,4 @@
-package com.rafadev.cordova.plugin.printergowell;
+package com.rafadev.cordova;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -6,6 +6,8 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+// import org.apache.cordova.*;
+// import org.apache.cordova.api.*;
 
 import android.annotation.TargetApi;
 
@@ -14,9 +16,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 @TargetApi(19)
-public class Printer extends CordovaPlugin {
-
-    private CallbackContext command;
+public class PrinterGowell extends CordovaPlugin {
 
     /**
      * Executes the request.
@@ -34,13 +34,10 @@ public class Printer extends CordovaPlugin {
      * @return         Whether the action was valid.
      */
     @Override
-    public boolean execute (String action, JSONArray args,
-            CallbackContext callback) throws JSONException {
-
-        command = callback;
+    public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
         if (action.equalsIgnoreCase("openPrinter")) {
-            openPrinter(args);
+            openPrinter(args, callbackContext);
 
             return true;
         }
@@ -52,13 +49,16 @@ public class Printer extends CordovaPlugin {
         }
 
         if (action.equalsIgnoreCase("isNoConnection")) {
-            BluetoothPrintDriver.IsNoConnection();
+            // BluetoothPrintDriver.IsNoConnection();
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "Rafa");
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
 
             return true;
         }
 
         if (action.equalsIgnoreCase("print")) {
-            print(args);
+            // print(args, callbackContext);
 
             return true;
         }
@@ -67,7 +67,7 @@ public class Printer extends CordovaPlugin {
         return false;
     }
 
-    private void openPrinter(CordovaArgs args, CallbackContext callbackContext) throws JSONException
+    private void openPrinter(JSONArray args, CallbackContext callbackContext) throws JSONException
     {
         String macAddress = args.getString(0);
 
@@ -84,27 +84,27 @@ public class Printer extends CordovaPlugin {
         }
     }
 
-    private void print (final JSONArray args) {
-        final String content   = args.optString(0, "<html></html>");
-        final JSONObject props = args.optJSONObject(1);
+    // private void print (JSONArray args, CallbackContext callbackContext) {
+    //     final String content   = args.optString(0, "<html></html>");
+    //     final JSONObject props = args.optJSONObject(1);
 
-        if(BluetoothPrintDriver.IsNoConnection()){
-            return;
-        }
+    //     if(BluetoothPrintDriver.IsNoConnection()){
+    //         return;
+    //     }
 
-        cordova.getActivity().runOnUiThread( new Runnable() {
-            @Override
-            public void run() {
-                BluetoothPrintDriver.Begin();
-                String tmpString = PrinterOptionActivity.this.getResources().getString('Rafadev');
-                BluetoothPrintDriver.ImportData(tmpString);
-                BluetoothPrintDriver.ImportData("\r");
-                BluetoothPrintDriver.LF();
-                BluetoothPrintDriver.LF();
-                BluetoothPrintDriver.excute();
-                BluetoothPrintDriver.ClearData();
-            }
-        });
-    }
+    //     cordova.getActivity().runOnUiThread( new Runnable() {
+    //         @Override
+    //         public void run() {
+    //             BluetoothPrintDriver.Begin();
+    //             String tmpString = "Rafadev";
+    //             BluetoothPrintDriver.ImportData(tmpString);
+    //             BluetoothPrintDriver.ImportData("\r");
+    //             BluetoothPrintDriver.LF();
+    //             BluetoothPrintDriver.LF();
+    //             BluetoothPrintDriver.excute();
+    //             BluetoothPrintDriver.ClearData();
+    //         }
+    //     });
+    // }
 
 }
