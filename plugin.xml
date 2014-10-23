@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.rafadev.cordova.plugin.printergowell"
+        version="0.7.1-dev">
+
+    <name>Printer Gowell</name>
+
+    <description>
+        Cordova plugin to print using Gowell bluetooth printer
+    </description>
+
+    <repo>
+        https://github.com/katzer/cordova-plugin-printer.git
+    </repo>
+
+    <keywords>
+        print, printer, android, gowell, bluetooth
+    </keywords>
+
+    <license>Apache 2.0</license>
+
+    <author>Ferri Sutanto</author>
+
+    <!-- cordova -->
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <!-- interface -->
+    <js-module src="www/printer.js" name="PrinterGowell">
+        <clobbers target="plugin.printergowell" />
+        <clobbers target="cordova.plugins.printergowell" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PrinterGowell">
+                <param name="android-package" value="com.rafadev.cordova.plugin.printergowell.Printer"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/RT_Android_Bluetooth_SDK.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/Printer.java" target-dir="src/com/rafadev/cordova/plugin/printergowell" />
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.BLUETOOTH"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+        </config-file>
+    </platform>
+</plugin>
