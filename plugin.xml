@@ -43,11 +43,14 @@
         </config-file>
 
         <source-file src="src/android/RT_Android_Bluetooth_SDK.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/DateString.java" target-dir="src/com/rafadev/cordova/plugin/printergowell" />
+        <source-file src="src/android/Utils.java" target-dir="src/com/rafadev/cordova/plugin/printergowell" />
         <source-file src="src/android/PrinterGowell.java" target-dir="src/com/rafadev/cordova/plugin/printergowell" />
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.BLUETOOTH"/>
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
         </config-file>
     </platform>
 </plugin>
